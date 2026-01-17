@@ -10,17 +10,15 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Apply custom CSS
 st.markdown(ui_utils.CUSTOM_CSS, unsafe_allow_html=True)
 
-st.title(f"{ui_utils.get_icon('energy')} OctoGreen: Smart Energy Analysis Platform")
+st.markdown(f"<h1>{ui_utils.get_icon('energy')} OctoGreen: Smart Energy Analysis Platform</h1>", unsafe_allow_html=True)
 
-# Sidebar: Data Source Selection
-st.sidebar.header(f"{ui_utils.get_icon('database')} Data Source")
+st.sidebar.markdown(f"<h3>{ui_utils.get_icon('database')} Data Source</h3>", unsafe_allow_html=True)
 data_source = st.sidebar.radio("How to load data?", ["Upload CSV", "Open Data Sources"])
 
 if data_source == "Open Data Sources":
-    st.sidebar.subheader(f"{ui_utils.get_icon('world')} Select Data Source")
+    st.sidebar.markdown(f"<h4>{ui_utils.get_icon('world')} Select Data Source</h4>", unsafe_allow_html=True)
     source = st.sidebar.selectbox("Source", [
         f"{ui_utils.get_icon('chart')} UCI Household (2M+ records)",
         f"{ui_utils.get_icon('energy')} EPIAS Turkey (Real-time)",
@@ -32,7 +30,7 @@ if data_source == "Open Data Sources":
     ])
     
     if "UCI Household" in source:
-        if st.sidebar.button(f"{ui_utils.get_icon('download')} Download Data"):
+        if st.sidebar.button(f"{ui_utils.get_icon('download')} Download Data", key="uci_btn"):
             with st.spinner("Downloading UCI dataset..."):
                 df = open_data.fetch_kaggle_household()
                 st.success(f"{ui_utils.get_icon('check')} {len(df)} records loaded!")
@@ -150,20 +148,16 @@ else:
         st.warning(f"{ui_utils.get_icon('warning')} Please upload a CSV file.")
         st.stop()
 
-# Data Preview
-st.subheader(f"{ui_utils.get_icon('chart')} Data Preview")
+st.markdown(f"<h2>{ui_utils.get_icon('chart')} Data Preview</h2>", unsafe_allow_html=True)
 st.dataframe(df.head())
 
-# AI Analysis and Recommendations
 analysis = ai_analysis.analyze(df)
-st.subheader(f"{ui_utils.get_icon('chart_line')} AI Analysis Results and Recommendations")
+st.markdown(f"<h2>{ui_utils.get_icon('chart_line')} AI Analysis Results and Recommendations</h2>", unsafe_allow_html=True)
 st.write(analysis["summary"])
 st.write(analysis["recommendations"])
 
-# Reporting
-st.subheader(f"{ui_utils.get_icon('report')} Download Report")
+st.markdown(f"<h2>{ui_utils.get_icon('report')} Download Report</h2>", unsafe_allow_html=True)
 report_tools.download_buttons(df, analysis)
 
-# Visualization
-st.subheader(f"{ui_utils.get_icon('chart')} Consumption Charts and Carbon Footprint")
+st.markdown(f"<h2>{ui_utils.get_icon('chart')} Consumption Charts and Carbon Footprint</h2>", unsafe_allow_html=True)
 report_tools.visualize(df, analysis)
