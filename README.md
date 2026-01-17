@@ -1,3 +1,5 @@
+# <img src="assets/octogreen-logo.png" alt="OctoGreen Logo" width="120"/>
+#
 # OctoGreen: Smart Energy Analysis and Savings Platform
 
 ## Project Purpose
@@ -38,6 +40,24 @@ pip install -r requirements.txt
 - **Bill Estimation**: Estimate hourly consumption from monthly bills
 - **Device Estimation**: Calculate consumption based on device specifications
 - **Open Data**: Access UCI Household, EPIAS Turkey, and sample datasets
+
+## API Usage: open_data.py
+
+`open_data.py` modülü, çeşitli açık veri kaynaklarından enerji tüketim verilerini almak için aşağıdaki API'leri kullanır:
+
+- **EPIAS Transparency Platform (Türkiye Gerçek Zamanlı Tüketim)**
+   - API: `https://seffaflik.epias.com.tr/transparency/service/consumption/real-time-consumption`
+   - Amaç: Türkiye'nin saatlik toplam elektrik tüketim verilerini almak ve analizlerde kullanmak.
+
+- **Kaggle UCI Household Power Consumption Dataset**
+   - API: `https://archive.ics.uci.edu/ml/machine-learning-databases/00235/household_power_consumption.zip`
+   - Amaç: Ev tipi elektrik tüketim örnek verisiyle analiz ve test yapmak.
+
+- **Open Power System Data**
+   - API: `https://data.open-power-system-data.org/time_series/latest/time_series_60min_singleindex.csv`
+   - Amaç: Farklı ülkelerin şebeke bazlı saatlik elektrik tüketim verilerini almak ve karşılaştırmalı analizler yapmak.
+
+Her bir API, platformun analiz ve raporlama fonksiyonlarını desteklemek için veri sağlar. Bu modül sayesinde kullanıcılar, gerçek ve örnek veri kaynaklarından kolayca veri çekebilir ve analiz edebilir.
 
 ## CSV Format
 ```csv
