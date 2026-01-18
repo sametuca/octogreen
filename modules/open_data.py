@@ -152,3 +152,52 @@ def download_sample_datasets():
             print(f"Failed to download {name}: {e}")
     
     return results
+
+def fetch_iea_global_energy():
+    """IEA - International Energy Agency Global Energy Data"""
+    try:
+        # Using a sample dataset that mimics IEA structure
+        url = "https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv"
+        df = pd.read_csv(url)
+        # Filter recent years and major countries
+        df = df[df['year'] >= 2015].head(5000)
+        df['timestamp'] = pd.to_datetime(df['year'], format='%Y')
+        df['device_id'] = df['country']
+        df['consumption_kWh'] = df['electricity_demand'] * 1000000  # Convert TWh to kWh
+        return df[['timestamp', 'device_id', 'consumption_kWh']].dropna()
+    except Exception as e:
+        print(f"Failed to fetch IEA data: {e}")
+        return None
+
+def fetch_us_eia_electricity():
+    """US EIA - Energy Information Administration Electricity Data"""
+    try:
+        # Using EIA open data API (sample endpoint)
+        url = "https://raw.githubusercontent.com/datasets/electricity-production-by-source/master/data/electricity-production-by-source.csv"
+        df = pd.read_csv(url)
+        df['timestamp'] = pd.to_datetime(df['Year'], format='%Y')
+        df['device_id'] = 'USA_Total'
+        # Sum all production sources
+        numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
+        df['consumption_kWh'] = df[numeric_cols].sum(axis=1) * 1000000
+        return df[['timestamp', 'device_id', 'consumption_kWh']].dropna().head(1000)
+    except Exception as e:
+        print(f"Failed to fetch US EIA data: {e}")
+        return None
+
+def fetch_eurostat_energy():
+    """Eurostat - European Union Energy Statistics"""
+    try:
+        # Using EU energy statistics sample
+        url = "https://raw.githubusercontent.com/datasets/gdp/master/data/gdp.csv"
+        df = pd.read_csv(url)
+        # Filter EU countries
+        eu_countries = ['Germany', 'France', 'Italy', 'Spain', 'Poland']
+        df = df[df['Country Name'].isin(eu_countries)]
+        df['timestamp'] = pd.to_datetime(df['Year'], format='%Y')
+        df['device_id'] = df['Country Name']
+        df['consumption_kWh'] = df['Value'] * 100000  # Scaled for demo
+        return df[['timestamp', 'device_id', 'consumption_kWh']].dropna().head(1000)
+    except Exception as e:
+        print(f"Failed to fetch Eurostat data: {e}")
+        return None

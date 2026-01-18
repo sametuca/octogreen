@@ -1,12 +1,17 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
+from modules import translations
+
+def t(key):
+    """Translation helper"""
+    return translations.get_text(key, st.session_state.get('language', 'en'))
 
 def download_buttons(df, analysis):
-    st.download_button("Download data as CSV", df.to_csv(index=False), file_name="data.csv")
-    if st.button("Download PDF report"):
+    st.download_button(t("download_csv"), df.to_csv(index=False), file_name="data.csv")
+    if st.button(t("download_pdf")):
         pdf_bytes = generate_pdf_report(df, analysis)
-        st.download_button("Download PDF report (generated)", pdf_bytes, file_name="report.pdf")
+        st.download_button(t("download_pdf_generated"), pdf_bytes, file_name="report.pdf")
 
 def visualize(df, analysis):
     import plotly.graph_objects as go
@@ -43,51 +48,118 @@ def visualize(df, analysis):
         margin=dict(l=50, r=50, t=50, b=50)
     )
     
-    # Summary Metrics
-    st.markdown("<h3 style='color:#1f2937; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-top: 2rem;'>Summary Metrics</h3>", unsafe_allow_html=True)
+    # Enhanced Summary Metrics with new additions
+    st.markdown(f"""
+        <div style='text-align: center; margin: 2rem 0 1.5rem 0;'>
+            <h2 style='background: linear-gradient(135deg, #0071e3 0%, #0056b3 100%); 
+                       -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+                       font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;'>
+                {t('performance_insights')}
+            </h2>
+            <p style='color: #86868b; font-size: 1.1rem;'>{t('key_metrics')}</p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # First row - Savings metrics
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown("<div class='metric-card'>" + 
                     f"<div class='metric-value'>{analysis['summary']['tasarruf_kwh']:.2f}</div>" +
-                    "<div class='metric-label'>Estimated Savings (kWh)</div>" +
+                    f"<div class='metric-label'><i class='fa-solid fa-bolt' style='color: #10b981;'></i> {t('energy_savings')}</div>" +
                     "</div>", unsafe_allow_html=True)
     with col2:
         st.markdown("<div class='metric-card'>" + 
                     f"<div class='metric-value'>{analysis['summary']['tasarruf_carbon']:.2f}</div>" +
-                    "<div class='metric-label'>Carbon Savings (kg CO2)</div>" +
+                    f"<div class='metric-label'><i class='fa-solid fa-leaf' style='color: #10b981;'></i> {t('carbon_reduction')}</div>" +
                     "</div>", unsafe_allow_html=True)
     with col3:
         st.markdown("<div class='metric-card'>" + 
-                    f"<div class='metric-value'>{analysis['summary']['tasarruf_tl']:.2f}</div>" +
-                    "<div class='metric-label'>USD Savings</div>" +
+                    f"<div class='metric-value'>${analysis['summary']['tasarruf_tl']:.2f}</div>" +
+                    f"<div class='metric-label'><i class='fa-solid fa-dollar-sign' style='color: #10b981;'></i> {t('cost_savings')}</div>" +
                     "</div>", unsafe_allow_html=True)
     
-    # Hourly Consumption
-    st.markdown("<h3 style='color:#1f2937; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-top: 2rem;'>Hourly Consumption (All Devices)</h3>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Second row - New analytical metrics
+    col4, col5, col6, col7 = st.columns(4)
+    
+    # Calculate additional metrics
+    total_consumption = df['consumption_kWh'].sum()
+    avg_consumption = df['consumption_kWh'].mean()
+    max_consumption = df['consumption_kWh'].max()
+    efficiency_score = min(100, (1 - (avg_consumption / max_consumption)) * 100) if max_consumption > 0 else 0
+    
+    with col4:
+        st.markdown("<div class='metric-card'>" + 
+                    f"<div class='metric-value' style='font-size: 1.8rem;'>{total_consumption:.0f}</div>" +
+                    f"<div class='metric-label'><i class='fa-solid fa-database' style='color: #3b82f6;'></i> {t('total_usage')}</div>" +
+                    "</div>", unsafe_allow_html=True)
+    with col5:
+        st.markdown("<div class='metric-card'>" + 
+                    f"<div class='metric-value' style='font-size: 1.8rem;'>{avg_consumption:.2f}</div>" +
+                    f"<div class='metric-label'><i class='fa-solid fa-chart-line' style='color: #3b82f6;'></i> {t('average')}</div>" +
+                    "</div>", unsafe_allow_html=True)
+    with col6:
+        st.markdown("<div class='metric-card'>" + 
+                    f"<div class='metric-value' style='font-size: 1.8rem;'>{max_consumption:.2f}</div>" +
+                    f"<div class='metric-label'><i class='fa-solid fa-triangle-exclamation' style='color: #f59e0b;'></i> {t('peak_load')}</div>" +
+                    "</div>", unsafe_allow_html=True)
+    with col7:
+        st.markdown("<div class='metric-card'>" + 
+                    f"<div class='metric-value' style='font-size: 1.8rem; color: #10b981;'>{efficiency_score:.0f}%</div>" +
+                    f"<div class='metric-label'><i class='fa-solid fa-gauge-high' style='color: #10b981;'></i> {t('efficiency_score')}</div>" +
+                    "</div>", unsafe_allow_html=True)
+    
+    # Consumption Timeline
+    st.markdown(f"""
+        <div style='margin-top: 3rem; margin-bottom: 1rem;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
+                       border-left: 4px solid #0071e3; padding-left: 1rem;'>
+                <i class='fa-solid fa-chart-area' style='color: #0071e3;'></i> {t('consumption_timeline')}
+            </h3>
+            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem;'>
+                {t('realtime_usage')}
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+    
     fig = px.line(df, x='timestamp', y='consumption_kWh', color='device_id')
     fig.update_layout(
         **common_layout,
-        xaxis_title='Time',
-        yaxis_title='Consumption (kWh)',
-        legend_title='Device ID',
+        xaxis_title=t('time'),
+        yaxis_title=t('consumption_kwh'),
+        legend_title=t('device_id'),
         legend=dict(
             bgcolor='white',
             bordercolor=grid_color,
             borderwidth=1
-        )
+        ),
+        height=450
     )
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, use_container_width=True)
     
-    # Daily Total Consumption
-    st.markdown("<h3 style='color:#1f2937; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-top: 2rem;'>Daily Total Consumption</h3>", unsafe_allow_html=True)
+    # Daily Aggregation
+    st.markdown(f"""
+        <div style='margin-top: 3rem; margin-bottom: 1rem;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
+                       border-left: 4px solid #10b981; padding-left: 1rem;'>
+                <i class='fa-solid fa-calendar-days' style='color: #10b981;'></i> {t('daily_energy_profile')}
+            </h3>
+            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem;'>
+                {t('total_consumption_day')}
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+    
     daily = analysis['summary']['daily_total']
     fig2 = px.bar(x=list(daily.keys()), y=list(daily.values()), 
-                 labels={'x':'Day', 'y':'Total kWh'})
+                 labels={'x':t('day'), 'y':t('total_kwh')})
     fig2.update_layout(
         **common_layout,
-        xaxis_title='Day',
-        yaxis_title='Total Consumption (kWh)',
-        showlegend=False
+        xaxis_title=t('day'),
+        yaxis_title=t('total_kwh'),
+        showlegend=False,
+        height=400
     )
     fig2.update_traces(
         marker_color='#10b981',
@@ -95,18 +167,30 @@ def visualize(df, analysis):
         marker_line_width=1.5,
         opacity=0.8
     )
-    st.plotly_chart(fig2, width="stretch")
+    st.plotly_chart(fig2, use_container_width=True)
     
-    # Hourly Average Consumption
-    st.markdown("<h3 style='color:#1f2937; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-top: 2rem;'>Hourly Average Consumption</h3>", unsafe_allow_html=True)
+    # Hourly Pattern Analysis
+    st.markdown(f"""
+        <div style='margin-top: 3rem; margin-bottom: 1rem;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
+                       border-left: 4px solid #3b82f6; padding-left: 1rem;'>
+                <i class='fa-solid fa-clock' style='color: #3b82f6;'></i> {t('hourly_usage_patterns')}
+            </h3>
+            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem;'>
+                {t('average_by_hour')}
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+    
     hourly = analysis['summary']['hourly_avg']
     fig3 = px.bar(x=list(hourly.keys()), y=list(hourly.values()), 
-                 labels={'x':'Hour', 'y':'Average kWh'})
+                 labels={'x':t('hour'), 'y':t('average_kwh')})
     fig3.update_layout(
         **common_layout,
-        xaxis_title='Hour of Day',
-        yaxis_title='Average Consumption (kWh)',
-        showlegend=False
+        xaxis_title=t('hour'),
+        yaxis_title=t('average_kwh'),
+        showlegend=False,
+        height=400
     )
     fig3.update_traces(
         marker_color='#3b82f6',
@@ -114,10 +198,20 @@ def visualize(df, analysis):
         marker_line_width=1.5,
         opacity=0.8
     )
-    st.plotly_chart(fig3, width="stretch")
+    st.plotly_chart(fig3, use_container_width=True)
     
-    # Anomaly Points
-    st.markdown("<h3 style='color:#1f2937; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-top: 2rem;'>Anomaly Detection</h3>", unsafe_allow_html=True)
+    # Anomaly Detection
+    st.markdown(f"""
+        <div style='margin-top: 3rem; margin-bottom: 1rem;'>
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
+                       border-left: 4px solid #ef4444; padding-left: 1rem;'>
+                <i class='fa-solid fa-magnifying-glass-chart' style='color: #ef4444;'></i> {t('anomaly_detection')}
+            </h3>
+            <p style='color: #86868b; margin-left: 1.5rem; margin-top: 0.5rem;'>
+                {t('unusual_patterns')}
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
     anomalies = analysis['summary']['anomalies']
     if anomalies:
         anom_df = pd.DataFrame(anomalies)
@@ -205,8 +299,8 @@ def visualize(df, analysis):
         
         fig4.update_layout(
             **common_layout,
-            xaxis_title='Time',
-            yaxis_title='Consumption (kWh)',
+            xaxis_title=t('time'),
+            yaxis_title=t('consumption_kwh'),
             legend=dict(
                 bgcolor='white',
                 bordercolor=grid_color,
@@ -214,9 +308,9 @@ def visualize(df, analysis):
             )
         )
         
-        st.plotly_chart(fig4, width="stretch")
+        st.plotly_chart(fig4, use_container_width=True)
     else:
-        st.info("No anomalies detected.")
+        st.info(t("no_anomalies"))
 
 def generate_pdf_report(df, analysis):
     from fpdf import FPDF

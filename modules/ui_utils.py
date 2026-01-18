@@ -1,270 +1,386 @@
-"""Icon and styling utilities for OctoGreen - Apple Inspired Design"""
+"""Styling utilities for OctoGreen"""
 
-# Clean, Robust Apple-Style CSS
+# Modern Energy-Themed CSS
 CUSTOM_CSS = '''
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
-/* Base Settings */
+/* ===== BASE SETTINGS ===== */
 :root {
-    --bg-color: #ffffff;
-    --bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    --text-primary: #1d1d1f;
-    --text-secondary: #86868b;
-    --accent: #0071e3;
-    --accent-gradient: linear-gradient(135deg, #0071e3 0%, #0056b3 100%);
-    --card-border: #d2d2d7;
-    --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --primary-light: #d1fae5;
+    --accent: #f59e0b;
+    --dark-bg: #0f172a;
+    --light-bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+}
+
+/* Force Sora font on EVERYTHING */
+* {
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+html, body, div, span, p, a, button, input, select, textarea, label, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 .stApp {
-    background: var(--bg-gradient) !important;
-    font-family: 'Inter', sans-serif !important;
+    background: linear-gradient(180deg, #f0fdf4 0%, #f8fafc 50%, #f0f9ff 100%) !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-/* Hide Streamlit Default Elements */
+.stApp * {
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Hide Streamlit Elements */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
 [data-testid="stSidebar"] {display: none;}
 
 /* Typography */
-h1, h2, h3 {
-    text-align: center !important;
-    font-family: 'Inter', sans-serif !important;
+h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary) !important;
+    font-weight: 700 !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 p {
-    font-size: 1.05rem !important;
-    line-height: 1.5 !important;
     color: var(--text-secondary) !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-/* Center everything in main container & widen it */
+span {
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Container */
 .block-container {
-    max-width: 1200px !important;
-    padding-top: 2rem !important;
+    max-width: 1300px !important;
+    padding-top: 2.5rem !important;
     padding-bottom: 5rem !important;
 }
 
-/* Hero Section - Premium Design */
+/* ===== HERO SECTION ===== */
 .hero-box {
     text-align: center;
-    padding: 3rem 2rem;
-    margin-bottom: 3rem;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    padding: 4rem 2.5rem;
+    margin-bottom: 3.5rem;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(245, 158, 11, 0.05) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    border: 2px solid rgba(16, 185, 129, 0.2);
+    box-shadow: 0 20px 60px rgba(16, 185, 129, 0.1);
+}
+
+.hero-box * {
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 .hero-subtitle {
-    font-size: 1.3rem !important;
+    font-size: 1.25rem !important;
     color: var(--text-secondary) !important;
-    margin-top: 1rem !important;
-    font-weight: 400;
-    line-height: 1.6 !important;
+    margin-top: 1.5rem !important;
+    font-weight: 500 !important;
+    line-height: 1.7 !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-/* Selection Cards (Containers for Buttons) - Premium Design */
+/* ===== BUTTONS ===== */
 div.stButton > button {
     width: 100%;
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+    background: white !important;
     color: var(--text-primary) !important;
-    border: 2px solid rgba(0, 113, 227, 0.1) !important;
-    border-radius: 16px !important;
-    padding: 2rem 1.5rem !important;
-    font-size: 1.2rem !important;
+    border: 2px solid var(--primary) !important;
+    border-radius: 12px !important;
+    padding: 1.8rem 1.5rem !important;
+    font-size: 1.1rem !important;
     font-weight: 600 !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02) !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: relative !important;
-    overflow: hidden !important;
-}
-
-div.stButton > button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--accent-gradient);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2) !important;
+    transition: all 0.2s ease !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
 div.stButton > button:hover {
-    border-color: var(--accent) !important;
-    box-shadow: 0 8px 30px rgba(0, 113, 227, 0.25), 0 0 0 1px rgba(0, 113, 227, 0.1) !important;
-    transform: translateY(-4px) scale(1.02) !important;
-}
-
-div.stButton > button:hover::before {
-    opacity: 0.05;
+    border-color: var(--primary-dark) !important;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3) !important;
+    transform: translateY(-2px) !important;
+    background: rgba(16, 185, 129, 0.05) !important;
 }
 
 div.stButton > button:active {
-    transform: translateY(-2px) scale(1.01) !important;
-    box-shadow: 0 4px 15px rgba(0, 113, 227, 0.2) !important;
+    transform: translateY(0) !important;
 }
 
-/* Force light theme on Inputs (Selectbox, DateInput, etc.) */
-div[data-baseweb="select"] > div, 
-div[data-baseweb="input"] > div,
-div[data-baseweb="base-input"] {
-    background-color: white !important;
-    color: #1d1d1f !important;
-    border-color: #d2d2d7 !important;
+/* ===== SELECTBOX - COMPLETE NEW IMPLEMENTATION ===== */
+
+/* Container */
+.stSelectbox {
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-/* Force text color inside inputs */
-input, .stSelectbox div {
-   color: #1d1d1f !important;
+.stSelectbox * {
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-/* Force light theme on Status/Spinner */
-div[data-testid="stStatusWidget"] {
-    background-color: white !important;
-    color: #1d1d1f !important;
-    border: 1px solid #d2d2d7 !important;
+/* Label */
+.stSelectbox label {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    margin-bottom: 0.5rem !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-/* Inputs wrapper */
-.stSelectbox > div > div, .stTextInput > div > div, .stDateInput > div > div {
-    border-radius: 8px !important;
-    border-color: #d2d2d7 !important;
-    background-color: white !important;
-    color: #1d1d1f !important;
+/* Main select wrapper */
+.stSelectbox [data-baseweb="select"] {
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-/* Expander styling - Premium AI Analysis Button */
+.stSelectbox [data-baseweb="select"] * {
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Select control (the box) */
+.stSelectbox [data-baseweb="select"] > div {
+    background-color: #ffffff !important;
+    border: 2px solid var(--border) !important;
+    border-radius: 10px !important;
+    min-height: 48px !important;
+    padding: 0 12px !important;
+}
+
+/* Select control hover */
+.stSelectbox [data-baseweb="select"] > div:hover {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* The clickable button area */
+.stSelectbox [data-baseweb="select"] [role="button"] {
+    background-color: transparent !important;
+    color: var(--text-primary) !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    padding: 8px 0 !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Selected value container */
+.stSelectbox [data-baseweb="select"] [role="button"] > div {
+    color: var(--text-primary) !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Selected value text - ALL NESTED ELEMENTS */
+.stSelectbox [data-baseweb="select"] [role="button"] > div > div,
+.stSelectbox [data-baseweb="select"] [role="button"] > div > div > div,
+.stSelectbox [data-baseweb="select"] [role="button"] span,
+.stSelectbox [data-baseweb="select"] [role="button"] p {
+    color: var(--text-primary) !important;
+    font-size: 1rem !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Dropdown arrow */
+.stSelectbox [data-baseweb="select"] svg {
+    fill: var(--text-primary) !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+/* Dropdown menu container */
+[data-baseweb="popover"] {
+    background-color: #ffffff !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+    margin-top: 4px !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+[data-baseweb="popover"] * {
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Options list */
+[role="listbox"] {
+    background-color: #ffffff !important;
+    padding: 6px !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Individual option */
+[role="option"] {
+    background-color: #ffffff !important;
+    color: var(--text-primary) !important;
+    padding: 12px 14px !important;
+    border-radius: 6px !important;
+    margin: 2px 0 !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Option hover */
+[role="option"]:hover {
+    background-color: var(--primary-light) !important;
+    color: var(--primary-dark) !important;
+}
+
+/* Selected option */
+[role="option"][aria-selected="true"] {
+    background-color: var(--primary) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* ===== OTHER INPUTS ===== */
+
+/* Text Input */
+.stTextInput input {
+    background-color: #ffffff !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border) !important;
+    border-radius: 10px !important;
+    padding: 12px !important;
+}
+
+/* Date Input */
+.stDateInput input {
+    background-color: #ffffff !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border) !important;
+    border-radius: 10px !important;
+}
+
+/* ===== EXPANDER ===== */
 .streamlit-expanderHeader {
-    background: var(--accent-gradient) !important;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
     color: white !important;
     border: none !important;
-    border-radius: 12px !important;
-    font-weight: 600 !important;
-    font-size: 1.05rem !important;
-    padding: 1.2rem 1.5rem !important;
-    box-shadow: 0 4px 20px rgba(0, 113, 227, 0.3), 0 0 0 1px rgba(0, 113, 227, 0.1) !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    letter-spacing: 0.5px !important;
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    padding: 1.3rem 1.8rem !important;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3) !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.streamlit-expanderHeader p {
+    color: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .streamlit-expanderHeader:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 30px rgba(0, 113, 227, 0.4), 0 0 0 1px rgba(0, 113, 227, 0.2) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4) !important;
 }
 
 .streamlit-expanderHeader svg {
     fill: white !important;
+    flex-shrink: 0 !important;
 }
 
-/* Expander content area */
 details[open] > .streamlit-expanderHeader {
-    border-radius: 12px 12px 0 0 !important;
+    border-radius: 14px 14px 0 0 !important;
 }
 
 details > div {
-    border: 2px solid rgba(0, 113, 227, 0.1) !important;
+    border: 2px solid var(--primary-light) !important;
     border-top: none !important;
-    border-radius: 0 0 12px 12px !important;
+    border-radius: 0 0 14px 14px !important;
     background: white !important;
+    padding: 2rem !important;
 }
 
-/* Force Light Theme for DataFrames & Tables */
-[data-testid="stDataFrame"] {
-    background-color: white !important;
-    color: #1d1d1f !important;
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-}
-[data-testid="stDataFrame"] div[role="grid"] {
-    color: #1d1d1f !important;
-}
-[data-testid="stDataFrame"] div[role="columnheader"] {
-    background-color: #f5f5f7 !important;
-    color: #1d1d1f !important;
-    font-weight: 600 !important;
-}
-
-/* Force White Buttons (Secondary) */
-button:not(.primary-action-btn button) {
-    background-color: white !important;
-    color: #1d1d1f !important;
-    border: 1px solid #d2d2d7 !important;
-}
-button:not(.primary-action-btn button):hover {
-    border-color: #0071e3 !important;
-    color: #0071e3 !important;
-    background-color: white !important;
-}
-
-/* Info Card Style - Premium Glassmorphism */
+/* ===== INFO CARDS ===== */
 .info-card {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    border-radius: 16px;
-    padding: 2rem;
-    text-align: left;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 244, 0.5) 100%);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(16, 185, 129, 0.2);
+    border-radius: 18px;
+    padding: 2.2rem;
+    box-shadow: 0 10px 40px rgba(16, 185, 129, 0.1);
+    transition: all 0.4s ease;
 }
 
 .info-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.4);
 }
 
 .info-card h4 {
-    text-align: left !important;
-    margin-top: 0 !important;
-    color: var(--accent) !important;
-    font-size: 1.1rem !important;
+    color: var(--primary) !important;
+    font-size: 1.15rem !important;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 700 !important;
+    letter-spacing: 1.5px;
+    font-weight: 800 !important;
 }
 
 .metric-value {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 800;
-    background: var(--accent-gradient);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin: 0.5rem 0;
+    margin: 0.8rem 0;
+    font-family: 'Space Mono', monospace;
 }
 
-/* Fix Plotly Modebar styling (remove grey backgrounds, fix icons) */
-.js-plotly-plot .plotly .modebar {
-    background-color: transparent !important;
+/* ===== DATAFRAMES ===== */
+[data-testid="stDataFrame"] {
+    background-color: white !important;
+    color: var(--text-primary) !important;
+    border: 2px solid var(--border) !important;
+    border-radius: 12px !important;
+}
+
+[data-testid="stDataFrame"] div[role="columnheader"] {
+    background: linear-gradient(135deg, #f0fdf4 0%, #f0f9ff 100%) !important;
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid var(--primary) !important;
+}
+
+/* ===== METRICS ===== */
+[data-testid="metric-container"] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 253, 244, 0.5) 100%) !important;
+    border: 2px solid rgba(16, 185, 129, 0.15) !important;
+    border-radius: 16px !important;
+    padding: 1.8rem !important;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.08) !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-testid="metric-container"]:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 35px rgba(16, 185, 129, 0.15) !important;
+}
+
+/* ===== DIVIDER ===== */
+hr {
     border: none !important;
-}
-.js-plotly-plot .plotly .modebar-group {
-    background-color: transparent !important;
-}
-.js-plotly-plot .plotly .modebar-btn {
-    background-color: transparent !important;
-}
-.js-plotly-plot .plotly .modebar-btn path {
-    fill: #86868b !important;
-}
-.js-plotly-plot .plotly .modebar-btn.active path,
-.js-plotly-plot .plotly .modebar-btn:hover path {
-    fill: #0071e3 !important;
+    height: 2px !important;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent) !important;
+    margin: 2rem 0 !important;
 }
 
-/* --- ANIMATIONS (Apple-like smooth entry) --- */
-@keyframes fadeInUp {
+/* ===== ANIMATIONS ===== */
+@keyframes slideInUp {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -275,43 +391,65 @@ button:not(.primary-action-btn button):hover {
     }
 }
 
-@keyframes fadeScale {
+@keyframes fadeIn {
     from {
         opacity: 0;
-        transform: scale(0.98);
     }
     to {
         opacity: 1;
-        transform: scale(1);
     }
 }
 
-/* Apply animations */
 .hero-box {
-    animation: fadeInUp 0.8s ease-out forwards;
+    animation: slideInUp 0.6s ease-out;
 }
 
-/* Staggered animation for inputs/buttons container if possible, 
-   but globally applying to buttons gives a nice effect on load */
 div.stButton > button {
-    animation: fadeScale 0.6s ease-out forwards;
-    animation-delay: 0.2s; /* Slight delay after hero */
-    opacity: 0; /* Star invisible */
+    animation: fadeIn 0.4s ease-out;
+    animation-delay: 0.1s;
+    animation-fill-mode: both;
 }
 
-/* Info cards and metrics */
-.info-card, .metric-card {
-    animation: fadeInUp 0.7s ease-out forwards;
-    opacity: 0;
-    animation-delay: 0.3s;
+.info-card {
+    animation: slideInUp 0.5s ease-out;
+    animation-delay: 0.2s;
+    animation-fill-mode: both;
 }
 
-/* Center Logo Image Container */
+/* Image Container */
 div[data-testid="stImage"] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: fadeScale 0.8s ease-out;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    animation: fadeIn 0.6s ease-out;
+}
+
+div[data-testid="stImage"] > img {
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+/* ===== MESSAGES ===== */
+.stSuccess {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    border: 2px solid var(--primary) !important;
+    border-radius: 12px !important;
+    color: var(--primary-dark) !important;
+}
+
+.stError {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    border: 2px solid #ef4444 !important;
+    border-radius: 12px !important;
+    color: #dc2626 !important;
+}
+
+.stInfo {
+    background-color: rgba(59, 130, 246, 0.1) !important;
+    border: 2px solid #3b82f6 !important;
+    border-radius: 12px !important;
+    color: #1e40af !important;
 }
 </style>
 '''
@@ -326,11 +464,11 @@ def show_loading_progress(message, steps=None):
         status_text = st.empty()
         
         for i, step in enumerate(steps):
-            status_text.markdown(f"<p style='text-align:center; color:#86868B; font-size:0.9rem; margin-bottom:0.5rem;'>{step}</p>", unsafe_allow_html=True)
+            status_text.markdown(f"<p style='text-align:center; color:#64748b; font-size:0.9rem;'>{step}</p>", unsafe_allow_html=True)
             progress_bar.progress((i + 1) / len(steps))
             time.sleep(0.15)
         
-        status_text.markdown(f"<p style='text-align:center; color:#34C759; font-weight:500; margin-bottom:0.5rem;'>✓ {message}</p>", unsafe_allow_html=True)
+        status_text.markdown(f"<p style='text-align:center; color:#10b981; font-weight:600;'>✓ {message}</p>", unsafe_allow_html=True)
         time.sleep(0.5)
         progress_bar.empty()
         status_text.empty()
