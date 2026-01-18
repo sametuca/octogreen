@@ -48,6 +48,16 @@ def visualize(df, analysis):
         margin=dict(l=50, r=50, t=50, b=50)
     )
     
+    
+    def format_number(num):
+        """Format large numbers with K/M suffixes"""
+        if abs(num) >= 1_000_000:
+            return f"{num/1_000_000:.1f}M"
+        elif abs(num) >= 1_000:
+            return f"{num/1_000:.1f}K"
+        else:
+            return f"{num:.1f}"
+    
     # Enhanced Summary Metrics with new additions
     st.markdown(f"""
         <div style='text-align: center; margin: 2rem 0 1.5rem 0;'>
@@ -60,23 +70,122 @@ def visualize(df, analysis):
         </div>
     """, unsafe_allow_html=True)
     
+    # Add tooltip CSS
+    st.markdown("""
+        <style>
+        .metric-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
+            position: relative;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+        .metric-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            line-height: 1.3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+        .tooltip-icon {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #d1d5db;
+            color: white;
+            font-size: 10px;
+            line-height: 14px;
+            text-align: center;
+            cursor: help;
+            position: relative;
+        }
+        .tooltip-icon:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            white-space: normal;
+            width: 200px;
+            text-align: left;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+        .tooltip-icon:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #1f2937;
+            z-index: 1001;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    
     # First row - Savings metrics
     col1, col2, col3 = st.columns(3)
+    
+    savings_kwh = analysis['summary']['tasarruf_kwh']
+    savings_carbon = analysis['summary']['tasarruf_carbon']
+    savings_usd = analysis['summary']['tasarruf_tl']
+    
     with col1:
-        st.markdown("<div class='metric-card'>" + 
-                    f"<div class='metric-value'>{analysis['summary']['tasarruf_kwh']:.2f}</div>" +
-                    f"<div class='metric-label'><i class='fa-solid fa-bolt' style='color: #10b981;'></i> {t('energy_savings')}</div>" +
-                    "</div>", unsafe_allow_html=True)
+        st.markdown(f"""<div class='metric-card'>
+                    <div class='metric-value'>{format_number(savings_kwh)}</div>
+                    <div class='metric-label'>
+                        <i class='fa-solid fa-bolt' style='color: #10b981;'></i> 
+                        {t('energy_savings')}
+                        <span class='tooltip-icon' data-tooltip='{t("tooltip_energy_savings")}'>?</span>
+                    </div>
+                </div>""", unsafe_allow_html=True)
     with col2:
-        st.markdown("<div class='metric-card'>" + 
-                    f"<div class='metric-value'>{analysis['summary']['tasarruf_carbon']:.2f}</div>" +
-                    f"<div class='metric-label'><i class='fa-solid fa-leaf' style='color: #10b981;'></i> {t('carbon_reduction')}</div>" +
-                    "</div>", unsafe_allow_html=True)
+        st.markdown(f"""<div class='metric-card'>
+                    <div class='metric-value'>{format_number(savings_carbon)}</div>
+                    <div class='metric-label'>
+                        <i class='fa-solid fa-leaf' style='color: #10b981;'></i> 
+                        {t('carbon_reduction')}
+                        <span class='tooltip-icon' data-tooltip='{t("tooltip_carbon_reduction")}'>?</span>
+                    </div>
+                </div>""", unsafe_allow_html=True)
     with col3:
-        st.markdown("<div class='metric-card'>" + 
-                    f"<div class='metric-value'>${analysis['summary']['tasarruf_tl']:.2f}</div>" +
-                    f"<div class='metric-label'><i class='fa-solid fa-dollar-sign' style='color: #10b981;'></i> {t('cost_savings')}</div>" +
-                    "</div>", unsafe_allow_html=True)
+        st.markdown(f"""<div class='metric-card'>
+                    <div class='metric-value'>${format_number(savings_usd)}</div>
+                    <div class='metric-label'>
+                        <i class='fa-solid fa-dollar-sign' style='color: #10b981;'></i> 
+                        {t('cost_savings')}
+                        <span class='tooltip-icon' data-tooltip='{t("tooltip_cost_savings")}'>?</span>
+                    </div>
+                </div>""", unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -90,25 +199,42 @@ def visualize(df, analysis):
     efficiency_score = min(100, (1 - (avg_consumption / max_consumption)) * 100) if max_consumption > 0 else 0
     
     with col4:
-        st.markdown("<div class='metric-card'>" + 
-                    f"<div class='metric-value' style='font-size: 1.8rem;'>{total_consumption:.0f}</div>" +
-                    f"<div class='metric-label'><i class='fa-solid fa-database' style='color: #3b82f6;'></i> {t('total_usage')}</div>" +
-                    "</div>", unsafe_allow_html=True)
+        st.markdown(f"""<div class='metric-card'>
+                    <div class='metric-value' style='font-size: 1.6rem;'>{format_number(total_consumption)}</div>
+                    <div class='metric-label'>
+                        <i class='fa-solid fa-database' style='color: #3b82f6;'></i> 
+                        {t('total_usage')}
+                        <span class='tooltip-icon' data-tooltip='{t("tooltip_total_usage")}'>?</span>
+                    </div>
+                </div>""", unsafe_allow_html=True)
     with col5:
-        st.markdown("<div class='metric-card'>" + 
-                    f"<div class='metric-value' style='font-size: 1.8rem;'>{avg_consumption:.2f}</div>" +
-                    f"<div class='metric-label'><i class='fa-solid fa-chart-line' style='color: #3b82f6;'></i> {t('average')}</div>" +
-                    "</div>", unsafe_allow_html=True)
+        st.markdown(f"""<div class='metric-card'>
+                    <div class='metric-value' style='font-size: 1.6rem;'>{format_number(avg_consumption)}</div>
+                    <div class='metric-label'>
+                        <i class='fa-solid fa-chart-line' style='color: #3b82f6;'></i> 
+                        {t('average')}
+                        <span class='tooltip-icon' data-tooltip='{t("tooltip_average")}'>?</span>
+                    </div>
+                </div>""", unsafe_allow_html=True)
     with col6:
-        st.markdown("<div class='metric-card'>" + 
-                    f"<div class='metric-value' style='font-size: 1.8rem;'>{max_consumption:.2f}</div>" +
-                    f"<div class='metric-label'><i class='fa-solid fa-triangle-exclamation' style='color: #f59e0b;'></i> {t('peak_load')}</div>" +
-                    "</div>", unsafe_allow_html=True)
+        st.markdown(f"""<div class='metric-card'>
+                    <div class='metric-value' style='font-size: 1.6rem;'>{format_number(max_consumption)}</div>
+                    <div class='metric-label'>
+                        <i class='fa-solid fa-triangle-exclamation' style='color: #f59e0b;'></i> 
+                        {t('peak_load')}
+                        <span class='tooltip-icon' data-tooltip='{t("tooltip_peak_load")}'>?</span>
+                    </div>
+                </div>""", unsafe_allow_html=True)
     with col7:
-        st.markdown("<div class='metric-card'>" + 
-                    f"<div class='metric-value' style='font-size: 1.8rem; color: #10b981;'>{efficiency_score:.0f}%</div>" +
-                    f"<div class='metric-label'><i class='fa-solid fa-gauge-high' style='color: #10b981;'></i> {t('efficiency_score')}</div>" +
-                    "</div>", unsafe_allow_html=True)
+        st.markdown(f"""<div class='metric-card'>
+                    <div class='metric-value' style='font-size: 1.6rem; color: #10b981;'>{efficiency_score:.0f}%</div>
+                    <div class='metric-label'>
+                        <i class='fa-solid fa-gauge-high' style='color: #10b981;'></i> 
+                        {t('efficiency_score')}
+                        <span class='tooltip-icon' data-tooltip='{t("tooltip_efficiency_score")}'>?</span>
+                    </div>
+                </div>""", unsafe_allow_html=True)
+
     
     # Consumption Timeline
     st.markdown(f"""

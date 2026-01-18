@@ -105,7 +105,14 @@ TRANSLATIONS = {
         "download_pdf": "Download PDF report",
         "download_pdf_generated": "Download PDF report (generated)",
         "savings_recommendation": "For 15% savings, turn off {device} device around {hour}:00. Estimated savings: {kwh:.2f} kWh, {carbon:.2f} kg CO2, ${usd:.2f}",
-        "scenario_recommendation": "If all devices shut down 1 hour earlier: {kwh:.2f} kWh, {carbon:.2f} kg CO2, ${usd:.2f} savings."
+        "scenario_recommendation": "If all devices shut down 1 hour earlier: {kwh:.2f} kWh, {carbon:.2f} kg CO2, ${usd:.2f} savings.",
+        "tooltip_energy_savings": "Potential energy savings based on 15% reduction from top consuming device",
+        "tooltip_carbon_reduction": "Estimated CO₂ emission reduction (using 0.4 kg CO₂ per kWh factor)",
+        "tooltip_cost_savings": "Projected cost savings in USD (based on average energy price)",
+        "tooltip_total_usage": "Total energy consumption across all devices and time periods",
+        "tooltip_average": "Average energy consumption per measurement",
+        "tooltip_peak_load": "Maximum single consumption value recorded",
+        "tooltip_efficiency_score": "Efficiency rating based on average vs peak consumption ratio"
     },
     "tr": {
         "app_title": "OctoGreen",
@@ -211,7 +218,14 @@ TRANSLATIONS = {
         "download_pdf": "PDF raporu indir",
         "download_pdf_generated": "PDF raporu indir (oluşturuldu)",
         "savings_recommendation": "%15 tasarruf için {device} cihazını saat {hour}:00 civarında kapatın. Tahmini tasarruf: {kwh:.2f} kWh, {carbon:.2f} kg CO2, ${usd:.2f}",
-        "scenario_recommendation": "Tüm cihazlar 1 saat erken kapatılırsa: {kwh:.2f} kWh, {carbon:.2f} kg CO2, ${usd:.2f} tasarruf."
+        "scenario_recommendation": "Tüm cihazlar 1 saat erken kapatılırsa: {kwh:.2f} kWh, {carbon:.2f} kg CO2, ${usd:.2f} tasarruf.",
+        "tooltip_energy_savings": "En fazla tüketen cihazdan %15 azaltma ile elde edilebilecek potansiyel enerji tasarrufu",
+        "tooltip_carbon_reduction": "Tahmini CO₂ emisyon azaltımı (kWh başına 0.4 kg CO₂ faktörü kullanılarak)",
+        "tooltip_cost_savings": "Öngörülen maliyet tasarrufu (ortalama enerji fiyatına göre USD cinsinden)",
+        "tooltip_total_usage": "Tüm cihazlar ve zaman dilimlerindeki toplam enerji tüketimi",
+        "tooltip_average": "Ölçüm başına ortalama enerji tüketimi",
+        "tooltip_peak_load": "Kaydedilen maksimum tek tüketim değeri",
+        "tooltip_efficiency_score": "Ortalama/tepe tüketim oranına dayalı verimlilik puanı"
     },
     "de": {
         "app_title": "OctoGreen",

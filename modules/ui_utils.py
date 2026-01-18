@@ -19,24 +19,24 @@ CUSTOM_CSS = '''
     --border: #e2e8f0;
 }
 
-/* Force Sora font on EVERYTHING */
-* {
-    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+/* Force Sora font on main text elements, but exclude common icon containers */
+:root {
+    --font-sora: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-html, body, div, span, p, a, button, input, select, textarea, label, h1, h2, h3, h4, h5, h6 {
-    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+html, body, .stApp {
+    font-family: var(--font-sora) !important;
 }
 
-.stApp {
-    background: linear-gradient(180deg, #f0fdf4 0%, #f8fafc 50%, #f0f9ff 100%) !important;
-    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea, label {
+    font-family: var(--font-sora) !important;
 }
 
-.stApp * {
-    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+/* Explicitly protect icon fonts if needed */
+.material-icons, .material-icons-outlined, .material-symbols-outlined, .material-symbols-rounded, [class*="material-symbols"] {
+    font-family: 'Material Symbols Outlined' !important; 
+    /* Fallback/Reset for icons */
 }
-
 /* Hide Streamlit Elements */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
@@ -78,9 +78,7 @@ span {
     box-shadow: 0 20px 60px rgba(16, 185, 129, 0.1);
 }
 
-.hero-box * {
-    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-}
+/* removed .hero-box * rule */
 
 .hero-subtitle {
     font-size: 1.25rem !important;
@@ -124,9 +122,7 @@ div.stButton > button:active {
     font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-.stSelectbox * {
-    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-}
+/* removed stSelectbox * rule */
 
 /* Label */
 .stSelectbox label {
@@ -142,9 +138,7 @@ div.stButton > button:active {
     font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-.stSelectbox [data-baseweb="select"] * {
-    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-}
+/* removed recursive font rule */
 
 /* Select control (the box) */
 .stSelectbox [data-baseweb="select"] > div {
@@ -204,9 +198,7 @@ div.stButton > button:active {
     font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
 }
 
-[data-baseweb="popover"] * {
-    font-family: 'Sora', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-}
+/* removed popover recursive rule */
 
 /* Options list */
 [role="listbox"] {

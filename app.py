@@ -211,63 +211,64 @@ input {
     padding: 0.75rem 1rem !important;
 }
 
-/* Selectbox - Force proper styling */
-.stSelectbox > div > div,
-.stSelectbox [data-baseweb="select"] > div,
-div[data-baseweb="select"] {
+/* Selectbox - Clean & Professional */
+div[data-baseweb="select"] > div:first-child {
     background-color: white !important;
-    border: 2px solid rgba(59, 130, 246, 0.3) !important;
-    border-radius: 14px !important;
-    padding: 0.75rem 1rem !important;
-    font-size: 1rem !important;
-    font-weight: 500 !important;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12) !important;
-    color: var(--text-primary) !important;
+    border: 1px solid rgba(59, 130, 246, 0.4) !important;
+    border-radius: 12px !important;
+    padding: 6px 12px !important;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.05) !important;
+    transition: all 0.2s ease;
 }
 
-/* Force selectbox text to be visible - VERY SPECIFIC */
-.stSelectbox div[data-baseweb="select"] div,
-.stSelectbox div[data-baseweb="select"] span,
-div[data-baseweb="select"] div,
-div[data-baseweb="select"] span,
-[data-baseweb="select"] [role="button"],
-[data-baseweb="select"] [role="button"] > div {
-    color: #1e3a8a !important;
-    font-weight: 500 !important;
-    font-size: 1rem !important;
-}
-
-/* Selectbox placeholder */
-.stSelectbox div[data-baseweb="select"] input {
-    color: #1e3a8a !important;
-}
-
-/* Selectbox selected value */
-.stSelectbox [data-baseweb="select"] [data-baseweb="input"] {
-    color: #1e3a8a !important;
-}
-
-/* Selectbox hover */
-.stSelectbox > div > div:hover,
-div[data-baseweb="select"]:hover {
-    border-color: rgba(59, 130, 246, 0.5) !important;
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.18) !important;
-}
-
-/* Focus states */
-div[data-baseweb="select"]:focus-within,
-div[data-baseweb="input"]:focus-within {
+div[data-baseweb="select"] > div:first-child:hover {
     border-color: var(--accent) !important;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15) !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1) !important;
 }
 
-/* Selectbox label */
-.stSelectbox label {
-    color: var(--text-primary) !important;
+/* Fix text color inside selectbox - generic catch-all */
+div[data-baseweb="select"] span, 
+div[data-baseweb="select"] div,
+[data-baseweb="menu"] div,
+[data-baseweb="menu"] span {
+    color: #1e3a8a !important; 
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+}
+
+/* Dropdown Menu (Popover) */
+div[data-baseweb="popover"],
+div[data-baseweb="menu"] {
+    background-color: white !important;
+    border: 1px solid rgba(59, 130, 246, 0.2) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
+div[data-baseweb="option"] {
+    background-color: transparent !important;
+}
+
+div[data-baseweb="option"]:hover,
+div[data-baseweb="option"][aria-selected="true"] {
+    background-color: #eff6ff !important;
     font-weight: 600 !important;
-    font-size: 1.1rem !important;
-    margin-bottom: 0.75rem !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+}
+
+/* Adjust label styling */
+.stSelectbox label p {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Remove default streamlit borders if they appear on wrapper */
+.stSelectbox > div {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
 }
 
 /* Date inputs */
@@ -489,21 +490,7 @@ def render_selection_screen():
                 "Eurostat - EU Energy"
             ], index=0)
             
-            # Force selectbox text to be visible with JavaScript
-            st.markdown("""
-            <script>
-            setTimeout(function() {
-                const selectboxes = document.querySelectorAll('[data-baseweb="select"]');
-                selectboxes.forEach(function(sb) {
-                    const allElements = sb.querySelectorAll('*');
-                    allElements.forEach(function(el) {
-                        el.style.color = '#1e3a8a';
-                        el.style.setProperty('color', '#1e3a8a', 'important');
-                    });
-                });
-            }, 100);
-            </script>
-            """, unsafe_allow_html=True)
+
             
             st.markdown("<br>", unsafe_allow_html=True)
             
