@@ -599,6 +599,18 @@ def render_hero():
             st.markdown(f"<h1 style='text-align: center;'>{t('app_title')}</h1>", unsafe_allow_html=True)
     
     st.markdown(f"""
+        <div style="text-align: center; margin-top: 0.5rem; margin-bottom: 2rem; opacity: 0.8;">
+            <p style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-bottom: 10px;">
+                Thanks for help
+            </p>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" height="25" style="border-radius: 4px;">
+                <img src="https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" height="25" style="border-radius: 4px;">
+                <img src="https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" height="25" style="border-radius: 4px;">
+                <img src="https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white" height="25" style="border-radius: 4px;">
+            </div>
+        </div>
+
         <div class="hero-box">
             <p class="hero-subtitle">{t('hero_subtitle')}<br><span style="font-size: 0.95rem; color: #64748b;">{t('hero_description')}</span></p>
         </div>
