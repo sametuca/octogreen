@@ -112,7 +112,16 @@ TRANSLATIONS = {
         "tooltip_total_usage": "Total energy consumption across all devices and time periods",
         "tooltip_average": "Average energy consumption per measurement",
         "tooltip_peak_load": "Maximum single consumption value recorded",
-        "tooltip_efficiency_score": "Efficiency rating based on average vs peak consumption ratio"
+        "tooltip_efficiency_score": "Efficiency rating based on average vs peak consumption ratio",
+        "savings_opportunities": "Savings Opportunities",
+        "savings_opportunities_desc": "Actionable scenarios showing potential impact of energy-saving measures",
+        "scenario": "Scenario",
+        "action": "Action",
+        "impact": "Impact",
+        "global_impact": "Global Impact",
+        "trees_planted": "trees planted",
+        "homes_powered": "homes powered for 1 day",
+        "cars_off_road": "cars off the road for 1 day"
     },
     "tr": {
         "app_title": "OctoGreen",
@@ -225,7 +234,16 @@ TRANSLATIONS = {
         "tooltip_total_usage": "Tüm cihazlar ve zaman dilimlerindeki toplam enerji tüketimi",
         "tooltip_average": "Ölçüm başına ortalama enerji tüketimi",
         "tooltip_peak_load": "Kaydedilen maksimum tek tüketim değeri",
-        "tooltip_efficiency_score": "Ortalama/tepe tüketim oranına dayalı verimlilik puanı"
+        "tooltip_efficiency_score": "Ortalama/tepe tüketim oranına dayalı verimlilik puanı",
+        "savings_opportunities": "Tasarruf Fırsatları",
+        "savings_opportunities_desc": "Enerji tasarrufu önlemlerinin potansiyel etkisini gösteren uygulanabilir senaryolar",
+        "scenario": "Senaryo",
+        "action": "Eylem",
+        "impact": "Etki",
+        "global_impact": "Küresel Etki",
+        "trees_planted": "ağaç dikilmesi",
+        "homes_powered": "ev 1 gün boyunca elektriklendirilmesi",
+        "cars_off_road": "aracın 1 gün trafikten çekilmesi"
     },
     "de": {
         "app_title": "OctoGreen",

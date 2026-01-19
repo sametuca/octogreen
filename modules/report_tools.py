@@ -64,7 +64,7 @@ def visualize(df, analysis):
             <h2 style='background: linear-gradient(135deg, #0071e3 0%, #0056b3 100%); 
                        -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
                        font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;'>
-                {t('performance_insights')}
+                <i class='fa-solid fa-chart-line' style='background: linear-gradient(135deg, #0071e3 0%, #0056b3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'></i> {t('performance_insights')}
             </h2>
             <p style='color: #86868b; font-size: 1.1rem;'>{t('key_metrics')}</p>
         </div>
@@ -235,8 +235,181 @@ def visualize(df, analysis):
                     </div>
                 </div>""", unsafe_allow_html=True)
 
+
+
     
-    # Consumption Timeline
+    # ========== SAVINGS OPPORTUNITIES SECTION ==========
+    st.markdown(f"""
+        <div style='text-align: center; margin: 4rem 0 2rem 0;'>
+            <h2 style='background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+                       -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+                       font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;'>
+                <i class='fa-solid fa-lightbulb' style='background: linear-gradient(135deg, #10b981 0%, #059669 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'></i> {t('savings_opportunities')}
+            </h2>
+            <p style='color: #86868b; font-size: 1.1rem;'>{t('savings_opportunities_desc')}</p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Scenario cards CSS
+    st.markdown("""
+        <style>
+        .scenario-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            border: 2px solid #d1fae5;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+        }
+        .scenario-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+            border-color: #10b981;
+        }
+        .scenario-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #065f46;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .scenario-icon {
+            font-size: 1.3rem;
+        }
+        .scenario-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+        .scenario-metric {
+            text-align: center;
+            padding: 0.6rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #d1fae5;
+        }
+        .scenario-metric-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+        .scenario-metric-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.2rem;
+        }
+        .scenario-impact {
+            background: #ecfdf5;
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-top: 0.8rem;
+        }
+        .scenario-impact-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #065f46;
+            margin-bottom: 0.5rem;
+        }
+        .scenario-impact-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .scenario-impact-item {
+            font-size: 0.8rem;
+            color: #047857;
+            background: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid #a7f3d0;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    # Get current language
+    lang = st.session_state.get('language', 'en')
+    
+    # Display scenarios in grid
+    scenarios = analysis.get('scenarios', [])
+    
+    # FontAwesome icons for different scenarios (replacing emojis)
+    fa_icons = [
+        '<i class="fa-solid fa-bolt" style="color: #f59e0b;"></i>',
+        '<i class="fa-solid fa-moon" style="color: #8b5cf6;"></i>',
+        '<i class="fa-solid fa-chart-line" style="color: #3b82f6;"></i>',
+        '<i class="fa-solid fa-calendar-check" style="color: #10b981;"></i>',
+        '<i class="fa-solid fa-wrench" style="color: #ef4444;"></i>',
+        '<i class="fa-solid fa-bullseye" style="color: #06b6d4;"></i>'
+    ]
+    
+    # Show scenarios in pairs
+    for i in range(0, len(scenarios), 2):
+        cols = st.columns(2)
+        
+        for j, col in enumerate(cols):
+            idx = i + j
+            if idx < len(scenarios):
+                scenario = scenarios[idx]
+                
+                # Select title based on language
+                title = scenario['title_tr'] if lang == 'tr' else scenario['title_en']
+                
+                # Get FontAwesome icon
+                icon = fa_icons[idx] if idx < len(fa_icons) else '<i class="fa-solid fa-lightbulb" style="color: #f59e0b;"></i>'
+                
+                with col:
+                    # Format values safely - ensure reasonable display
+                    kwh_val = format_number(scenario['kwh'])
+                    carbon_val = format_number(scenario['carbon'])
+                    cost_val = format_number(scenario['cost'])
+                    trees_val = int(min(scenario['trees'], 999999)) if scenario['trees'] < 1e15 else 0
+                    homes_val = int(min(scenario['homes'], 999999)) if scenario['homes'] < 1e15 else 0
+                    cars_val = int(min(scenario['cars'], 999999)) if scenario['cars'] < 1e15 else 0
+                    
+                    # Compact card design - prevents overflow
+                    st.markdown(f'''<div style="background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04); overflow: hidden;">
+<div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+<div style="width: 40px; height: 40px; min-width: 40px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-radius: 10px; display: flex; align-items: center; justify-content: center;">{icon}</div>
+<div style="font-size: 0.95rem; font-weight: 600; color: #1e293b; line-height: 1.3; overflow: hidden; text-overflow: ellipsis;">{title}</div>
+</div>
+<div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+<div style="flex: 1; min-width: 70px; text-align: center; padding: 0.75rem 0.5rem; background: #f0fdf4; border-radius: 10px;">
+<div style="font-size: 1.1rem; font-weight: 700; color: #059669; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{kwh_val}</div>
+<div style="font-size: 0.65rem; color: #6b7280; text-transform: uppercase; margin-top: 0.2rem;">kWh</div>
+</div>
+<div style="flex: 1; min-width: 70px; text-align: center; padding: 0.75rem 0.5rem; background: #ecfeff; border-radius: 10px;">
+<div style="font-size: 1.1rem; font-weight: 700; color: #0891b2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{carbon_val}</div>
+<div style="font-size: 0.65rem; color: #6b7280; text-transform: uppercase; margin-top: 0.2rem;">kg CO₂</div>
+</div>
+<div style="flex: 1; min-width: 70px; text-align: center; padding: 0.75rem 0.5rem; background: #f0f9ff; border-radius: 10px;">
+<div style="font-size: 1.1rem; font-weight: 700; color: #0284c7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${cost_val}</div>
+<div style="font-size: 0.65rem; color: #6b7280; text-transform: uppercase; margin-top: 0.2rem;">USD</div>
+</div>
+</div>
+<div style="background: #f8fafc; border-radius: 10px; padding: 0.75rem;">
+<div style="font-size: 0.75rem; font-weight: 600; color: #065f46; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;">
+<i class="fa-solid fa-earth-americas" style="color: #10b981;"></i> {t("global_impact")}
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+<span style="font-size: 0.7rem; color: #047857; background: white; padding: 0.35rem 0.5rem; border-radius: 6px; border: 1px solid #d1fae5; display: inline-flex; align-items: center; gap: 0.3rem;">
+<i class="fa-solid fa-tree" style="color: #22c55e;"></i> {trees_val}
+</span>
+<span style="font-size: 0.7rem; color: #047857; background: white; padding: 0.35rem 0.5rem; border-radius: 6px; border: 1px solid #d1fae5; display: inline-flex; align-items: center; gap: 0.3rem;">
+<i class="fa-solid fa-house" style="color: #f59e0b;"></i> {homes_val}
+</span>
+<span style="font-size: 0.7rem; color: #047857; background: white; padding: 0.35rem 0.5rem; border-radius: 6px; border: 1px solid #d1fae5; display: inline-flex; align-items: center; gap: 0.3rem;">
+<i class="fa-solid fa-car" style="color: #ef4444;"></i> {cars_val}
+</span>
+</div>
+</div>
+</div>''', unsafe_allow_html=True)
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
+
     st.markdown(f"""
         <div style='margin-top: 3rem; margin-bottom: 1rem;'>
             <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
@@ -440,7 +613,7 @@ def visualize(df, analysis):
 
 def generate_pdf_report(df, analysis):
     from fpdf import FPDF
-    import io
+    
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
@@ -457,6 +630,12 @@ def generate_pdf_report(df, analysis):
     pdf.cell(200, 10, txt="Daily Totals:", ln=True)
     for day, val in analysis['summary']['daily_total'].items():
         pdf.cell(200, 10, txt=f"{day}: {val:.2f} kWh", ln=True)
-    pdf_output = io.BytesIO()
-    pdf.output(pdf_output)
-    return pdf_output.getvalue()
+    
+    # Use dest='S' to return PDF as bytes string
+    pdf_string = pdf.output(dest='S')
+    
+    # Convert to bytes if it's a string (for fpdf compatibility)
+    if isinstance(pdf_string, str):
+        return pdf_string.encode('latin-1')
+    return pdf_string
+

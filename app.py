@@ -177,6 +177,14 @@ div.stButton > button:active {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: 700 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+}
+
+.info-card p,
+.info-card strong,
+.info-card span,
+.info-card div {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
 }
 
 .metric-value {
@@ -194,6 +202,7 @@ div.stButton > button:active {
     color: var(--text-secondary) !important;
     font-size: 0.95rem !important;
     font-weight: 500 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
 }
 
 /* Inputs - Blue Theme */
@@ -311,6 +320,20 @@ div[data-baseweb="option"][aria-selected="true"] {
     fill: white !important;
 }
 
+/* Expander text - ensure SF Pro */
+.streamlit-expanderHeader,
+.streamlit-expanderHeader p,
+.streamlit-expanderHeader span,
+.streamlit-expanderHeader div {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+}
+
+/* Protect Material Icons from font override */
+.streamlit-expanderHeader svg text {
+    font-family: 'Material Icons' !important;
+}
+
+
 /* DataFrames - Blue Theme */
 [data-testid="stDataFrame"] {
     background-color: white !important;
@@ -395,6 +418,80 @@ div[data-testid="stStatusWidget"] {
     color: var(--text-primary) !important;
     border-left: 4px solid var(--accent) !important;
 }
+
+/* ===== METRICS - FORCE SF PRO FONT ===== */
+[data-testid="stMetricValue"],
+[data-testid="stMetricLabel"],
+[data-testid="stMetricDelta"],
+.stMetric,
+[data-testid="stMetric"],
+[data-testid="stMetric"] *,
+[data-testid="stMetricValue"] *,
+[data-testid="stMetricLabel"] *,
+[data-testid="stMetricDelta"] * {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif !important;
+}
+
+[data-testid="stMetricValue"],
+[data-testid="stMetricValue"] div,
+[data-testid="stMetricValue"] span,
+[data-testid="stMetricValue"] p {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+}
+
+[data-testid="stMetricLabel"],
+[data-testid="stMetricLabel"] div,
+[data-testid="stMetricLabel"] span,
+[data-testid="stMetricLabel"] p {
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+}
+
+/* Button text - force SF Pro */
+div.stButton > button,
+div.stButton > button span,
+div.stButton > button p {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+}
+
+/* Caption text under buttons */
+.stCaption, .stCaption p {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+    color: var(--text-secondary) !important;
+}
+
+/* Info card content */
+.info-card p,
+.info-card strong,
+.info-card span {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif !important;
+}
+
+/* Download buttons - special styling */
+div.stDownloadButton > button,
+div.stDownloadButton > button span,
+div.stDownloadButton > button p {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+    font-weight: 600 !important;
+}
+
+/* All button text - comprehensive coverage */
+button,
+button span,
+button p,
+button div,
+[role="button"],
+[role="button"] span,
+[role="button"] p {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif !important;
+}
+
+
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 """, unsafe_allow_html=True)
@@ -718,7 +815,11 @@ def render_dashboard():
     
     with col_main:
         # AI Analysis Section
-        st.subheader(t("ai_analysis"))
+        st.markdown(f"""
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;'>
+                <i class='fa-solid fa-brain' style='color: #8b5cf6;'></i> {t("ai_analysis")}
+            </h3>
+        """, unsafe_allow_html=True)
         
         analysis = st.session_state.get('analysis')
         if analysis is None:
@@ -735,15 +836,39 @@ def render_dashboard():
             """, unsafe_allow_html=True)
         
         # Visualization Header with custom styling to match other headers
-        st.markdown(f"<h3 style='color:#0f172a; border-bottom: 2px solid rgba(16, 185, 129, 0.2); padding-bottom: 0.5rem; margin-top:2rem;'>{t('visualization')}</h3>", unsafe_allow_html=True)
+        st.markdown(f"""
+            <h3 style='color: #1d1d1f; font-size: 1.5rem; font-weight: 600; 
+                       border-left: 4px solid #6366f1; padding-left: 1rem; margin-top: 2rem;'>
+                <i class='fa-solid fa-chart-column' style='color: #6366f1;'></i> {t('visualization')}
+            </h3>
+        """, unsafe_allow_html=True)
         report_tools.visualize(df, analysis)
 
+
     with col_side:
-        st.subheader(t("key_findings"))
-        st.info(analysis['recommendations'])
+        st.markdown(f"""
+            <h3 style='color: #1d1d1f; font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem;'>
+                <i class='fa-solid fa-lightbulb' style='color: #f59e0b;'></i> {t("key_findings")}
+            </h3>
+        """, unsafe_allow_html=True)
+        
+        # Display recommendations as styled list
+        for i, rec in enumerate(analysis['recommendations'], 1):
+            st.markdown(f"""
+                <div style='background: #eff6ff; border-left: 3px solid #3b82f6; 
+                            padding: 0.8rem 1rem; margin-bottom: 0.8rem; border-radius: 6px;'>
+                    <p style='color: #1e3a8a; margin: 0; font-size: 0.95rem; line-height: 1.5;'>
+                        <strong>{i}.</strong> {rec}
+                    </p>
+                </div>
+            """, unsafe_allow_html=True)
         
         st.markdown("<br>", unsafe_allow_html=True)
-        st.subheader(t("export"))
+        st.markdown(f"""
+            <h3 style='color: #1d1d1f; font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem;'>
+                <i class='fa-solid fa-download' style='color: #10b981;'></i> {t("export")}
+            </h3>
+        """, unsafe_allow_html=True)
         report_tools.download_buttons(df, analysis)
 
 
