@@ -605,35 +605,60 @@ def render_hero():
     """, unsafe_allow_html=True)
 
 # --- MAIN SELECTION SCREEN ---
+# --- MAIN SELECTION SCREEN ---
 def render_selection_screen():
-    render_hero()
+    # Page Transition Animations
+    st.markdown("""
+    <style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .main-menu-container {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+    .sub-page-container {
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+    </style>
+    """, unsafe_allow_html=True)
     
-    # Selection Grid
+    # 1. MAIN MENU STATE (No selection yet)
     if st.session_state.data_mode is None:
-        # Use columns with explicit padding/gap
+        st.markdown('<div class="main-menu-container">', unsafe_allow_html=True)
+        render_hero()
+        
+        # Centered Navigation Grid
         col_space_l, col1, col2, col_space_r = st.columns([1, 2, 2, 1], gap="large")
         
         with col1:
-             if st.button(t("browse_open_data"), key="btn_open_data", width="stretch"):
+             if st.button(t("browse_open_data"), key="btn_open_data", use_container_width=True):
                 st.session_state.data_mode = 'open_data'
                 st.rerun()
              st.caption(t("open_data_desc"))
 
         with col2:
-             if st.button(t("upload_your_own"), key="btn_upload", width="stretch"):
+             if st.button(t("upload_your_own"), key="btn_upload", use_container_width=True):
                 st.session_state.data_mode = 'upload'
                 st.rerun()
              st.caption(t("upload_desc"))
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    # --- Mode: Open Data ---
+    # 2. OPEN DATA PAGE
     elif st.session_state.data_mode == 'open_data':
-        c1, c2 = st.columns([1, 5])
-        with c1:
-            if st.button(t("back"), key="back_btn"):
+        st.markdown('<div class="sub-page-container">', unsafe_allow_html=True)
+        
+        # Header with Back Button
+        c_back, c_title = st.columns([0.5, 4])
+        with c_back:
+            if st.button("←", key="back_btn_open", help="Back to Menu"):
                 st.session_state.data_mode = None
                 st.rerun()
+        with c_title:
+             st.markdown(f"<h2 style='margin:0; padding-top:5px;'>{t('select_dataset')}</h2>", unsafe_allow_html=True)
         
-        st.markdown(f"<h3>{t('select_dataset')}</h3>", unsafe_allow_html=True)
+        st.markdown("<hr style='margin-top:0.5rem; margin-bottom:2rem; opacity:0.3;'>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         
         col_opts, col_detais = st.columns([1.2, 0.8], gap="large")
@@ -820,16 +845,20 @@ def render_selection_screen():
                 """, unsafe_allow_html=True)
 
 
-    # --- Mode: Upload ---
+    # 3. UPLOAD PAGE
     elif st.session_state.data_mode == 'upload':
-        c1, c2 = st.columns([1, 5])
-        with c1:
-            if st.button(t("back"), key="back_btn_up"):
+        st.markdown('<div class="sub-page-container">', unsafe_allow_html=True)
+        
+        # Header with Back Button
+        c_back, c_title = st.columns([0.5, 4])
+        with c_back:
+            if st.button("←", key="back_btn_up", help="Back to Menu"):
                 st.session_state.data_mode = None
                 st.rerun()
-            
-        st.markdown(f"<h3>{t('upload_data')}</h3>", unsafe_allow_html=True)
-        st.markdown("<br>", unsafe_allow_html=True)
+        with c_title:
+             st.markdown(f"<h2 style='margin:0; padding-top:5px;'>{t('upload_data')}</h2>", unsafe_allow_html=True)
+             
+        st.markdown("<hr style='margin-top:0.5rem; margin-bottom:2rem; opacity:0.3;'>", unsafe_allow_html=True)
         
         uploaded = st.file_uploader("", type=["csv"])
         
